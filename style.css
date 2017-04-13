@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+p {
+    padding-top: 20px;
+}
+
+.modal {
+    display: none;
+    height: auto;
+    width: 400px;
+    position: absolute;    
+}
+
+.modal.visible {
+    display: block;
+    background: rgba(0, 0, 0, .5);
+    overflow: hidden;
+}
+
+.modal.visible .modal-body {
+    display: block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.modal-body {
+    display: block;
+    background: #fff;
+    text-align: left;
+    padding: 5px;
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+h1, p, a {
+    border: none;
+    display: inline-block;
+    font-size: 14px;
+    color: black;
+}
+h1 {margin: 0;
+line-height: 14px}

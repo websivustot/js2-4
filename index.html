@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lesson4</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="jquery-3.2.0.min.js"></script>
+    <script>
+        function getTips() {
+            _this = this;
+            var isOver;
+            text = ($('body').text()).replace(/[-]/g, ' ').replace(/[.,\,\",\«,\»]/g, '').toLowerCase().split(" ");
+            console.log(text);
+
+            this.modals = function (data, selector) {
+                $(selector).append(
+                    $('<div/>', { class: 'modal' })
+                );
+                $(selector + ' div').append(
+                    $('<div/>', { class: 'modal-body' })
+                );
+                $(selector + ' div' + ' div').append(
+                        $('<h1/>', { text: data.title }))
+                    .append(
+                        $('<p/>', { text: data.description })
+                    );
+
+                if (data.url) {
+                    $(selector + ' div' + ' div').append(
+                        $('<a/>', {
+                            text: data.url,
+                            href: data.url
+                        })
+                    );
+                }
+                if (data.picture) {
+                    $(selector + ' div' + ' div').append(
+                        $('<img/>', {
+                            src: data.url + '/' + data.picture
+                        }))
+                }
+            }
+
+            this.show = function (selector,x,y) {
+                $(selector + ' .modal').addClass('visible');
+                if (isOver != selector) {
+                    if (x + 400 > (document.documentElement.clientWidth)) {
+                        x = document.documentElement.clientWidth - 400
+                    }
+                    $(selector + ' .modal').css( { 'top' : y, 'left' : x } );
+                    isOver = selector;
+                }
+            }
+
+            this.hide = function (selector) {
+                $(selector + ' .modal').removeClass('visible');
+            }
+
+            this.getList = function () {
+                $.ajax({
+                    url: 'terms/terms.json',
+                    method: 'GET',
+                    dataType: 'json'
+                }).done(function (response) {
+
+                    for (var key in text) {
+                        for (var key1 in response) {
+                            data = response[key1].data;
+                            term = response[key1].term;
+                            if (term == text[key]) {
+                                var span = '<span class=\'' + data.slice(0, -5) + '\'>' + term + '</span>';
+                                var newBody = $('body').html().replace(term, span);
+                                $('body').html(newBody);
+                                $.ajax({
+                                    url: 'terms/' + data,
+                                    method: 'GET',
+                                    dataType: 'json'
+                                }).done(function (response1) {
+                                    var clas = '.' + this.url.slice(6, -5);
+                                    $(clas).css({
+                                        'color': 'blue',
+                                        'text-decoration': 'underline'
+                                    });
+                                    _this.modals(response1, clas);
+                                    $(clas).mouseover(function (e) {  
+                                        _this.show(clas,e.clientX - 30,e.clientY - 30); 
+                                    });
+                                    $(clas).click(function () {
+                                        _this.hide(clas);
+                                    });
+                                    $(clas).mouseout(function () {
+                                        _this.hide(clas);
+                                    });
+                                }).fail(function () {
+                                    alert("Ошибка загрузки данных");
+                                })
+
+                            };
+                        }
+                    }
+                }).fail(function () {
+                                    alert("Ошибка загрузки данных");
+                                })
+            }
+            this.getList();
+        }
+
+        $(document).ready(function () {
+
+            tips = new getTips();
+
+        })
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <p>Кризис жанра изящно аккумулирует midi-контроллер, однако сами песни забываются очень быстро. Символизм начинает конструктивный звукоряд. Соинтервалие, по определению, имеет элитарный мнимотакт. Легато, так или иначе, регрессийно использует суггестивный форшлаг. Еще Аристотель в своей «Политике» говорил, что музыка, воздействуя на человека, доставляет «своего рода очищение, то есть облегчение, связанное с наслаждением», однако притча имитирует эйдос, так Г.Корф формулирует собственную антитезу.</p>       
+
+        <p>Символический метафоризм, по определению, представляет собой райдер. Комплекс априорной бисексуальности многопланово продолжает персональный доминантсептаккорд. Как было показано выше, иносказательность образа вызывает элитарный нонаккорд, таким образом объектом имитации является число длительностей в каждой из относительно автономных ритмогрупп ведущего голоса. Интерпретация дает импрессионизм. Аполлоновское начало аккумулирует соноропериод.</p>
+
+        <p>Элегия изящно начинает феномер "психической мутации". Пентатоника имитирует перекрестный микрохроматический интервал. Кластерное вибрато параллельно. Рефрен вызывает композиционный октавер.</p>
+    </div>
+
+</body>
+
+</html>
